@@ -35,6 +35,10 @@ class MailView
       format = $2 || ".html"
 
       if actions.include?(name)
+        if defined?(Phrase)
+          request = Rack::Request.new(@rack_env)
+          Phrase.enabled = (request.host =~ /^translate/)
+        end
         ok render_mail(name, send(name), format)
       else
         not_found
